@@ -411,38 +411,38 @@ RICE - أرز</div>
       const file = event.target.files[0];
       if (!file) return;
 
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const img = new Image();
-        img.onload = function() {
-          const canvas = document.createElement('canvas');
-          const ctx = canvas.getContext('2d');
-          
-          // تصغير الأبعاد لتخفيف العبء عن ذاكرة الآيفون (أقصى عرض 1080 بكسل)
-          const MAX_WIDTH = 1080;
-          let width = img.width;
-          let height = img.height;
-          
-          if (width > MAX_WIDTH) {
-            height = Math.round((height * MAX_WIDTH) / width);
-            width = MAX_WIDTH;
-          }
-          
-          canvas.width = width;
-          canvas.height = height;
-          
-          // رسم الصورة بأبعادها الجديدة
-          ctx.drawImage(img, 0, 0, width, height);
-          
-          // ضغط الصورة وتقليل حجمها بنسبة 40%
-          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.6);
-          
-          // تعيين الصورة المضغوطة كخلفية (الآن سفاري سيتحملها بسهولة)
-          document.body.style.backgroundImage = `url('${compressedDataUrl}')`;
-        };
-        img.src = e.target.result;
+      // الحل الجذري: استخدام مسار مباشر لتفادي انفجار الذاكرة العشوائية
+      const imageUrl = URL.createObjectURL(file);
+      const img = new Image();
+      
+      img.onload = function() {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // تصغير قاسي ومقصود للخلفية (600 بكسل كافية جداً لورقة الـ A4)
+        const MAX_WIDTH = 600; 
+        let width = img.width;
+        let height = img.height;
+        
+        if (width > MAX_WIDTH) {
+          height = Math.round((height * MAX_WIDTH) / width);
+          width = MAX_WIDTH;
+        }
+        
+        canvas.width = width;
+        canvas.height = height;
+        ctx.drawImage(img, 0, 0, width, height);
+        
+        // ضغط الصورة إلى 30% فقط لتصبح خفيفة كالريشة على متصفح سفاري
+        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.3);
+        
+        document.body.style.backgroundImage = `url('${compressedDataUrl}')`;
+        
+        // تنظيف وتفريغ الذاكرة العشوائية فوراً بعد التطبيق
+        URL.revokeObjectURL(imageUrl);
       };
-      reader.readAsDataURL(file);
+      
+      img.src = imageUrl;
     }
     </script>
    <script>
