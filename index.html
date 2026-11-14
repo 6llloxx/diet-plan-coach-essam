@@ -156,30 +156,34 @@
         }
     </style>
    <style>
-     @media print {
-        /* 1. تفعيل الألوان وإجبار الخلفية على التكرار بحجم كل صفحة بالضبط */
+   @media print {
+        /* إجبار المتصفح على طباعة الألوان والخلفيات */
         *, html, body {
           -webkit-print-color-adjust: exact !important;
           print-color-adjust: exact !important;
         }
-        body {
-          background-size: 100vw 100vh !important;
-          background-repeat: repeat-y !important;
-        }
         
-        /* 2. منع الجداول والمربعات من الانقسام (مع حذف الكود الذي كان يدمر السوشيال ميديا) */
-        div[class*="bg-white"], div[class*="border"], table, tr, td, section, .box {
-          page-break-inside: avoid !important;
-          break-inside: avoid !important;
+        /* تكسير حاويات الفليكس الأساسية التي تسبب انقسام الصفحات */
+        body, main, .min-h-screen, .flex-col {
+          display: block !important;
+          height: auto !important;
+          min-height: auto !important;
         }
 
-        /* 3. إجبار السوشيال ميديا وتخطيطات الأعمدة على البقاء بشكل أفقي */
+        /* حماية الجداول والمربعات من الانقسام بشكل قطعي */
+        table, tr, td, .box, section {
+          page-break-inside: avoid !important;
+          break-inside: avoid !important;
+          display: inline-block !important; /* هذه الخاصية تجبر سفاري على عدم القسمة */
+          width: 100% !important;
+        }
+
+        /* إبقاء السوشيال ميديا والعناصر الأفقية بجانب بعضها */
         .flex {
           display: flex !important;
-          flex-wrap: nowrap !important;
         }
-        
-        /* إخفاء الأزرار أثناء الطباعة */
+
+        /* إخفاء الأزرار */
         .no-print {
           display: none !important;
         }
@@ -410,7 +414,6 @@ RICE - أرز</div>
       const file = event.target.files[0];
       if (!file) return;
 
-      // الحل الجذري: استخدام مسار مباشر لتفادي انفجار الذاكرة العشوائية
       const imageUrl = URL.createObjectURL(file);
       const img = new Image();
       
@@ -418,28 +421,43 @@ RICE - أرز</div>
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         
-        // تصغير قاسي ومقصود للخلفية (600 بكسل كافية جداً لورقة الـ A4)
-        const MAX_WIDTH = 600; 
+        const MAX_WIDTH = 800; 
         let width = img.width;
         let height = img.height;
-        
         if (width > MAX_WIDTH) {
           height = Math.round((height * MAX_WIDTH) / width);
           width = MAX_WIDTH;
         }
-        
         canvas.width = width;
         canvas.height = height;
         ctx.drawImage(img, 0, 0, width, height);
         
-        // ضغط الصورة إلى 30% فقط لتصبح خفيفة كالريشة على متصفح سفاري
-        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.3);
-       document.body.style.backgroundImage = `url('${compressedDataUrl}')`;
+        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.5);
         
-        // تنظيف وتفريغ الذاكرة العشوائية فوراً بعد التطبيق
+        // 1. عرض الصورة كخلفية في الشاشة العادية
+        document.body.style.backgroundImage = `url('${compressedDataUrl}')`;
+        document.body.style.backgroundSize = 'cover';
+        document.body.style.backgroundAttachment = 'fixed';
+        
+        // 2. الخدعة القاضية: حقن كود CSS مخصص للطباعة فقط لإجبار سفاري على رؤية الخلفية
+        let oldStyle = document.getElementById('print-bg-force');
+        if (oldStyle) oldStyle.remove();
+        
+        const style = document.createElement('style');
+        style.id = 'print-bg-force';
+        style.innerHTML = `
+          @media print {
+            body {
+              background-image: url('${compressedDataUrl}') !important;
+              background-size: cover !important;
+              background-attachment: fixed !important;
+            }
+          }
+        `;
+        document.head.appendChild(style);
+        
         URL.revokeObjectURL(imageUrl);
       };
-      
       img.src = imageUrl;
     }
     </script>
