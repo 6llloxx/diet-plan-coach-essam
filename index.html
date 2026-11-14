@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Montserrat:ital,wght@0,700;0,900;1,900&display=swap" rel="stylesheet">
     <!-- FontAwesome for Social Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         body {
             font-family: 'Tajawal', sans-serif;
@@ -204,7 +204,7 @@
     </div>
 
     <!-- Print / PDF Button (Hidden on Print) -->
-    <button onclick="window.print()" class="no-print fixed bottom-6 right-6 bg-gold hover:opacity-90 text-gray-900 font-black py-3 px-6 rounded-full shadow-[0_0_15px_rgba(212,175,55,0.6)] flex items-center gap-2 z-50 transition-all duration-300">
+    <button onclick="downloadPDF()" class="no-print fixed bottom-6 right-6 bg-gold hover:opacity-90 text-gray-900 font-black py-3 px-6 rounded-full shadow-[0_0_15px_rgba(212,175,55,0.6)] flex items-center gap-2 z-50 transition-all duration-300">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
         <span>حفظ كـ PDF</span>
     </button>
@@ -418,5 +418,27 @@ RICE - أرز</div>
             }
         }
     </script>
+    <script>
+  function downloadPDF() {
+    // إخفاء أزرار الطباعة والخلفية مؤقتاً لتنظيف الشاشة
+    var hideElements = document.querySelectorAll('.no-print');
+    hideElements.forEach(el => el.style.display = 'none');
+    
+    var element = document.body;
+    var opt = {
+      margin:       0,
+      filename:     'Diet_Plan_Coach_Essam.pdf',
+      image:        { type: 'jpeg', quality: 1 },
+      html2canvas:  { scale: 2, useCORS: true },
+      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      pagebreak:    { mode: ['css', 'legacy'], avoid: ['table', '.box', 'section', 'div'] }
+    };
+    
+    // إنشاء الـ PDF ثم إعادة إظهار الأزرار
+    html2pdf().set(opt).from(element).save().then(function() {
+        hideElements.forEach(el => el.style.display = '');
+    });
+  }
+</script>
 </body>
 </html>
