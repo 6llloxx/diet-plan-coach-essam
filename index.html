@@ -418,27 +418,32 @@ RICE - أرز</div>
             }
         }
     </script>
-    <script>
-  function downloadPDF() {
-    // إخفاء أزرار الطباعة والخلفية مؤقتاً لتنظيف الشاشة
-    var hideElements = document.querySelectorAll('.no-print');
-    hideElements.forEach(el => el.style.display = 'none');
-    
-    var element = document.body;
-    var opt = {
-      margin:       0,
-      filename:     'Diet_Plan_Coach_Essam.pdf',
-      image:        { type: 'jpeg', quality: 1 },
-      html2canvas:  { scale: 2, useCORS: true },
-      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      pagebreak:    { mode: ['css', 'legacy'], avoid: ['table', '.box', 'section', 'div'] }
-    };
-    
-    // إنشاء الـ PDF ثم إعادة إظهار الأزرار
-    html2pdf().set(opt).from(element).save().then(function() {
-        hideElements.forEach(el => el.style.display = '');
-    });
-  }
-</script>
+   <script>
+      function downloadPDF() {
+        // إخفاء الأزرار مؤقتاً
+        var hideElements = document.querySelectorAll('.no-print');
+        hideElements.forEach(el => el.style.display = 'none');
+        
+        // خطوة هندسية مهمة جداً للآيفون: التمرير لأعلى الصفحة لمنع انهيار الـ Canvas
+        window.scrollTo(0, 0);
+        
+        var element = document.body;
+        var opt = {
+          margin:       0,
+          filename:     'Diet_Plan_Coach_Essam.pdf',
+          image:        { type: 'jpeg', quality: 0.95 },
+          html2canvas:  { scale: 1, useCORS: true }, // تقليل المقياس إلى 1 لمنع انهيار ذاكرة سفاري
+          jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+        
+        // تنفيذ التحويل مع إضافة أمر الحماية (catch) لإعادة الأزرار في حال الانهيار
+        html2pdf().set(opt).from(element).save().then(function() {
+            hideElements.forEach(el => el.style.display = '');
+        }).catch(function(error) {
+            hideElements.forEach(el => el.style.display = '');
+            alert("قام متصفح الآيفون بإيقاف العملية مؤقتاً لحماية الذاكرة. يرجى المحاولة مرة أخرى.");
+        });
+      }
+    </script>
 </body>
 </html>
