@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diet Plan - Coach Essam</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Montserrat:ital,wght@0,700;0,900;1,900&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Social Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            background-image: url('image_7aecb5.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #111; /* Dark text everywhere by default */
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        .en-font { font-family: 'Montserrat', sans-serif; }
+
+        /* Shiny Metallic Gold Theme */
+        .text-gold { 
+            background: linear-gradient(to right, #d4af37, #FCF6BA, #aa8628, #FBF5B7, #8a6818);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent; /* Fallback */
+            font-weight: bold;
+        }
+        
+        .bg-gold { 
+            background: linear-gradient(to right, #d4af37, #FCF6BA, #aa8628, #FBF5B7, #8a6818) !important;
+            color: #111 !important; /* Dark text on gold */
+        }
+        
+        .border-gold { border-color: #d4af37; }
+        .border-gold-light { border-color: rgba(212, 175, 55, 0.4); }
+
+        /* Light Premium Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .glass-header {
+            background: rgba(255, 255, 255, 0.95);
+            color: #111;
+        }
+
+        .glass-cell {
+            background: rgba(255, 255, 255, 0.65);
+            color: #111;
+            transition: background 0.3s;
+        }
+        
+        .glass-cell:hover {
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        /* Editable Fields */
+        [contenteditable="true"] {
+            outline: none;
+            transition: all 0.3s ease;
+            color: #111 !important; /* Enforce dark text */
+            -webkit-user-select: text;
+            user-select: text;
+        }
+        
+        .editable-box {
+            background: rgba(255, 255, 255, 0.6);
+            border: 2px solid #d4af37;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            display: block;
+            width: 100%;
+        }
+
+        @media screen {
+            [contenteditable="true"]:hover, [contenteditable="true"]:focus {
+                background: rgba(255, 255, 255, 0.9);
+                box-shadow: 0 0 0 2px #d4af37, 0 0 12px rgba(212, 175, 55, 0.4);
+                border-radius: 0.5rem;
+            }
+            .editable-box:hover, .editable-box:focus {
+                background: rgba(255, 255, 255, 0.95);
+            }
+        }
+
+        /* Social Media Icons */
+        .social-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+        .social-circle:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+        }
+        .tiktok-bg { background-color: #000; color: #fff; }
+        .snapchat-bg { background-color: #FFFC00; color: #000; }
+        .instagram-bg { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); color: #fff; }
+        .whatsapp-bg { background-color: #25D366; color: #fff; }
+
+        /* Print Settings */
+        @media print {
+            .text-gold {
+                background: none !important;
+                -webkit-text-fill-color: #B38728 !important;
+                color: #B38728 !important;
+            }
+            .bg-gold {
+                background: #B38728 !important;
+                color: #fff !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .no-print { display: none !important; }
+            .page-break { page-break-before: always; break-before: page; }
+            @page { margin: 0; size: A4 portrait; }
+            body { 
+                background-color: #fff !important; 
+                background-image: none !important;
+                -webkit-print-color-adjust: exact; 
+            }
+            .glass {
+                background: rgba(255, 255, 255, 1) !important;
+                border: 1px solid #ddd !important;
+                box-shadow: none !important;
+                backdrop-filter: none;
+                width: 100% !important;
+            }
+            .print-full-width {
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+            .social-circle {
+                box-shadow: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Upload Background Button (Hidden on Print) -->
+    <div class="no-print fixed top-6 left-6 z-50">
+        <label class="cursor-pointer bg-white text-gray-900 border border-gold font-bold py-2 px-4 rounded-full shadow-lg flex items-center gap-2 hover:bg-gray-50 transition-all">
+            <svg class="w-5 h-5 text-[#d4af37]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+            <span class="text-sm">إضافة صورة خلفية</span>
+            <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
+        </label>
+    </div>
+
+    <!-- Print / PDF Button (Hidden on Print) -->
+    <button onclick="window.print()" class="no-print fixed bottom-6 right-6 bg-gold hover:opacity-90 text-gray-900 font-black py-3 px-6 rounded-full shadow-[0_0_15px_rgba(212,175,55,0.6)] flex items-center gap-2 z-50 transition-all duration-300">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+        <span>حفظ كـ PDF</span>
+    </button>
+
+    <!-- PAGE 1: COVER PAGE -->
+    <div class="min-h-screen flex flex-col items-center justify-center px-4 w-full print-full-width">
+        <div class="glass p-16 md:p-24 rounded-3xl shadow-2xl text-center flex flex-col justify-center items-center gap-6 border-2 border-gold max-w-4xl w-full">
+            <h1 class="en-font font-black text-6xl md:text-8xl tracking-[0.2em] text-gold uppercase drop-shadow-sm" contenteditable="true">DIET PLAN</h1>
+            <div class="w-24 md:w-32 h-1 bg-gold rounded-full my-4"></div>
+            <h2 class="en-font font-bold text-3xl md:text-4xl tracking-[0.3em] text-gray-900 uppercase" contenteditable="true">COACH ESSAM</h2>
+        </div>
+    </div>
+
+    <!-- PAGE 2: DIET SCHEDULE -->
+    <div class="page-break py-10 px-4 md:px-8 min-h-screen flex flex-col items-center justify-center">
+        <div class="w-full max-w-6xl print-full-width glass rounded-2xl overflow-hidden shadow-2xl">
+            <div class="p-6 md:p-10 space-y-8">
+                
+                <!-- Trainee Info -->
+                <div class="border border-gold-light rounded-xl overflow-hidden shadow-sm bg-white/40">
+                    <div class="grid grid-cols-2 md:grid-cols-5 text-center text-sm md:text-base font-bold border-b border-gold-light divide-x divide-x-reverse divide-gold-light glass-header">
+                        <div class="py-3 col-span-2 md:col-span-1 text-gold">اسم المتدرب</div>
+                        <div class="py-3 text-gold">العمر</div>
+                        <div class="py-3 text-gold">الوزن</div>
+                        <div class="py-3 text-gold">الطول</div>
+                        <div class="py-3 col-span-2 md:col-span-1 text-gold">تاريخ البرنامج</div>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-5 text-center text-lg md:text-xl font-bold text-gray-900 divide-x divide-x-reverse divide-gold-light glass-cell">
+                        <div class="py-4 col-span-2 md:col-span-1" contenteditable="true">فارس</div>
+                        <div class="py-4" contenteditable="true">31</div>
+                        <div class="py-4"><span contenteditable="true">79</span> <span class="text-sm font-normal text-gray-700">kg</span></div>
+                        <div class="py-4"><span contenteditable="true">167</span> <span class="text-sm font-normal text-gray-700">cm</span></div>
+                        <div class="py-4 en-font text-base col-span-2 md:col-span-1" contenteditable="true" dir="ltr">08-11-2026</div>
+                    </div>
+                </div>
+
+                <!-- Macros -->
+                <div class="border border-gold-light rounded-xl overflow-hidden shadow-sm bg-white/40">
+                    <div class="grid grid-cols-2 md:grid-cols-4 text-center text-sm md:text-base font-bold border-b border-gold-light divide-x divide-x-reverse divide-gold-light glass-header">
+                        <div class="py-4 bg-gold font-black text-gray-900 col-span-2 md:col-span-1 text-lg">السعرات الحرارية</div>
+                        <div class="py-4 flex flex-col justify-center text-gold">دهون <span class="en-font text-xs font-normal text-gray-600">Fats</span></div>
+                        <div class="py-4 flex flex-col justify-center text-gold">كاربوهيدرات <span class="en-font text-xs font-normal text-gray-600">Carbs</span></div>
+                        <div class="py-4 flex flex-col justify-center text-gold">بروتين <span class="en-font text-xs font-normal text-gray-600">Protein</span></div>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 text-center text-3xl font-bold text-gray-900 divide-x divide-x-reverse divide-gold-light glass-cell">
+                        <div class="py-6 text-gold bg-white/80 col-span-2 md:col-span-1 font-black shadow-inner" contenteditable="true">1800</div>
+                        <div class="py-6 flex items-center justify-center gap-1" contenteditable="true">60<span class="text-sm text-gray-600 font-normal">g</span></div>
+                        <div class="py-6 flex items-center justify-center gap-1" contenteditable="true">100<span class="text-sm text-gray-600 font-normal">g</span></div>
+                        <div class="py-6 flex items-center justify-center gap-1" contenteditable="true">180<span class="text-sm text-gray-600 font-normal">g</span></div>
+                    </div>
+                </div>
+
+                <!-- Meals Schedule -->
+                <div class="border border-gold-light rounded-xl overflow-hidden flex flex-col glass-cell shadow-sm bg-white/40">
+                    <!-- Meal 1 -->
+                    <div class="flex flex-col md:flex-row border-b border-gold-light">
+                        <div class="w-full md:w-48 glass-header text-gray-900 flex items-center justify-center font-black text-2xl md:text-3xl p-6 text-center border-l border-gold-light" contenteditable="true">
+                            الوجبة الأولى
+                        </div>
+                        <div class="flex-1 p-4 md:p-6 flex items-center">
+                            <div class="editable-box whitespace-pre-wrap leading-loose text-center md:text-right font-medium text-xl" contenteditable="true">إما 1.5 سكوب بروتين ايزو + 40 غرام شوفان او سيريلاك + ملعقة فول سوداني
+أو 8 بيضات حبتين صفار مع فلفل رومي + شريحتين توست او 2 تورتيلا</div>
+                        </div>
+                        <div class="w-full md:w-56 bg-white/60 p-6 flex flex-col justify-center font-bold space-y-4 border-r border-gold-light text-gray-900">
+                            <div class="flex justify-between items-center"><span class="text-base text-gray-700">كاربوهيدرات:</span> <span contenteditable="true" class="text-gray-900 font-black text-xl bg-white px-3 py-1 rounded-md shadow-sm border border-gold-light">32</span></div>
+                            <div class="flex justify-between items-center"><span class="text-base text-gray-700">بروتين:</span> <span contenteditable="true" class="text-gray-900 font-black text-xl bg-white px-3 py-1 rounded-md shadow-sm border border-gold-light">48</span></div>
+                            <div class="flex justify-between items-center"><span class="text-base text-gray-700">دهون:</span> <span contenteditable="true" class="text-gray-900 font-black text-xl bg-white px-3 py-1 rounded-md shadow-sm border border-gold-light">12</span></div>
+                        </div>
+                    </div>
+                    <!-- Meal 2 -->
+                    <div class="flex flex-col md:flex-row border-b border-gold-light">
+                        <div class="w-full md:w-48 glass-header text-gray-900 flex flex-col items-center justify-center font-black text-2xl md:text-3xl p-6 text-center border-l border-gold-light" contenteditable="true">
+                            الوجبة الثانية
+                            <span class="text-sm font-bold text-gray-600 mt-2">(قبل التمرين)</span>
+                        </div>
+                        <div class="flex-1 p-4 md:p-6 flex items-center">
+                            <div class="editable-box whitespace-pre-wrap leading-loose text-center md:text-right font-medium text-xl" contenteditable="true">200 غرام دجاج + 100 غرام رز + سلطة</div>
+                        </div>
+                        <div class="w-full md:w-56 bg-white/60 p-6 flex flex-col justify-center font-bold space-y-4 border-r border-gold-light text-gray-900">
+                            <div class="flex justify-between items-center"><span class="text-base text-gray-700">كاربوهيدرات:</span> <span contenteditable="true" class="text-gray-900 font-black text-xl bg-white px-3 py-1 rounded-md shadow-sm border border-gold-light">28</span></div>
+                            <div class="flex justify-between items-center"><span class="text-base text-gray-700">بروتين:</span> <span contenteditable="true" class="text-gray-900 font-black text-xl bg-white px-3 py-1 rounded-md shadow-sm border border-gold-light">50</span></div>
+                            <div class="flex justify-between items-center"><span class="text-base text-gray-700">دهون:</span> <span contenteditable="true" class="text-gray-900 font-black text-xl bg-white px-3 py-1 rounded-md shadow-sm border border-gold-light">10</span></div>
+                        </div>
+                    </div>
+                    <!-- Meal 3 -->
+                    <div class="flex flex-col md:flex-row border-b border-gold-light">
+                        <div class="w-full md:w-48 glass-header text-gray-900 flex items-center justify-center font-black text-2xl md:text-3xl p-6 text-center border-l border-gold-light" contenteditable="true">
+                            الوجبة الثالثة
+                        </div>
+                        <div class="flex-1 p-4 md:p-6 flex items-center">
+                            <div class="editable-box whitespace-pre-wrap leading-loose text-center md:text-right font-medium text-xl" contenteditable="true">إما 2 بطاطا مخبوزة متوسطة الحجم + 200 غرام فيله
+أو 100 غرام رز ابيض + 200 غرام دجاج</div>
+                        </div>
+                        <div class="w-full md:w-56 bg-white/60 p-6 flex flex-col justify-center font-bold space-y-4 border-r border-gold-light text-gray-900">
+                            <div class="flex justify-between items-center"><span class="text-base text-gray-700">كاربوهيدرات:</span> <span contenteditable="true" class="text-gray-900 font-black text-xl bg-white px-3 py-1 rounded-md shadow-sm border border-gold-light">58</span></div>
+                            <div class="flex justify-between items-center"><span class="text-base text-gray-700">بروتين:</span> <span contenteditable="true" class="text-gray-900 font-black text-xl bg-white px-3 py-1 rounded-md shadow-sm border border-gold-light">43</span></div>
+                            <div class="flex justify-between items-center"><span class="text-base text-gray-700">دهون:</span> <span contenteditable="true" class="text-gray-900 font-black text-xl bg-white px-3 py-1 rounded-md shadow-sm border border-gold-light">10</span></div>
+                        </div>
+                    </div>
+                    <!-- Meal 4 -->
+                    <div class="flex flex-col md:flex-row">
+                        <div class="w-full md:w-48 glass-header text-gray-900 flex items-center justify-center font-black text-2xl md:text-3xl p-6 text-center border-l border-gold-light" contenteditable="true">
+                            الوجبة الرابعة
+                        </div>
+                        <div class="flex-1 p-4 md:p-6 flex items-center">
+                            <div class="editable-box whitespace-pre-wrap leading-loose text-center md:text-right font-medium text-xl" contenteditable="true">150 غرام سلمون + سلطة
+أو 10 بيضات حبتين صفار + سلطة + ملعقة زيت زيتون</div>
+                        </div>
+                        <div class="w-full md:w-56 bg-white/60 p-6 flex flex-col justify-center font-bold space-y-4 border-r border-gold-light text-gray-900">
+                            <div class="flex justify-between items-center"><span class="text-base text-gray-700">كاربوهيدرات:</span> <span contenteditable="true" class="text-gray-900 font-black text-xl bg-white px-3 py-1 rounded-md shadow-sm border border-gold-light">5</span></div>
+                            <div class="flex justify-between items-center"><span class="text-base text-gray-700">بروتين:</span> <span contenteditable="true" class="text-gray-900 font-black text-xl bg-white px-3 py-1 rounded-md shadow-sm border border-gold-light">33</span></div>
+                            <div class="flex justify-between items-center"><span class="text-base text-gray-700">دهون:</span> <span contenteditable="true" class="text-gray-900 font-black text-xl bg-white px-3 py-1 rounded-md shadow-sm border border-gold-light">20</span></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 3: SHOPPING LIST, NOTES & SOCIAL MEDIA -->
+    <div class="page-break py-10 px-4 md:px-8 min-h-screen flex flex-col items-center justify-center">
+        <div class="w-full max-w-6xl print-full-width glass rounded-2xl overflow-hidden shadow-2xl p-6 md:p-12 flex flex-col h-full">
+            
+            <div class="flex-grow space-y-12">
+                <!-- Shopping List -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                    <!-- Column 1 -->
+                    <div class="flex flex-col">
+                        <div class="text-center font-black text-2xl md:text-3xl text-gray-900 border-2 border-gold p-4 mb-6 rounded-xl glass-header shadow-sm" contenteditable="true">احتياجات التسوق</div>
+                        <div class="editable-box flex-1 min-h-[350px] whitespace-pre-wrap text-lg font-bold leading-loose text-center md:text-right" contenteditable="true" dir="ltr">APPLES - تفاح
+BANANA - موز
+BLUEBERRIES - توت أزرق
+STRAWBERRIES - فراولة
+KIWI - كيوي
+ORANGE - برتقال
+POTATO - بطاطة
+SWEET POTATO - بطاطة حلوة
+BURGER - برجر
+CHICKEN - دجاج
+GROUND BEEF - لحم مفروم
+SALMON - سلمون
+SHRIMP - روبيان</div>
+                    </div>
+
+                    <!-- Column 2 -->
+                    <div class="flex flex-col">
+                        <div class="text-center font-black text-2xl md:text-3xl text-gray-900 border-2 border-gold p-4 mb-6 rounded-xl glass-header shadow-sm" contenteditable="true">احتياجات التسوق</div>
+                        <div class="editable-box flex-1 min-h-[350px] whitespace-pre-wrap text-lg font-bold leading-loose text-center md:text-right" contenteditable="true" dir="ltr">0% FAT GREEK YOGURT - زبادي يوناني خالي الدسم
+OLIVE OIL - زيت زيتون
+PEANUT BUTTER - زبدة فول سوداني
+ALMOND BUTTER - زبدة اللوز
+NUTELLA - نوتيلا
+CERELAC - سيريلاك
+KELLOGGS GRANOLA - جرانولا كيلوقز
+POTATO BUN - خبزة البطاطة
+RICE KRISPIES CEREAL - حبوب الأرز كرسبيسز
+POPCORN - فشار
+OATMEAL - شوفان
+TOAST - توست
+RICE - أرز</div>
+                    </div>
+                </div>
+
+                <!-- Notes Section -->
+                <div class="mt-10 flex flex-col items-center">
+                    <div class="text-center font-black text-3xl text-gray-900 border-2 border-gold py-4 px-12 mb-8 rounded-xl glass-header shadow-sm" contenteditable="true">
+                        ملاحظات
+                    </div>
+                    <div class="editable-box w-full min-h-[200px] p-8 whitespace-pre-wrap text-xl font-bold leading-relaxed text-right" contenteditable="true">- يمكن التبديل بين الوجبات وعدم الالتزام بالترتيب
+- يمكن استخدام "بروتين أيزو" أو "بروتين وي"
+- يمكن استخدام صلصات خالية من السعرات
+- يمكن شرب كولا زيرو ومشروبات خالية من السعرات
+- يمكن أضافة سلطات و خضراوات مع الوجبات</div>
+                </div>
+            </div>
+
+            <!-- Social Media Buttons (Clickable Links) -->
+            <div class="mt-12 pt-8 border-t border-gold-light flex justify-center items-center gap-6">
+                <!-- TikTok -->
+                <a href="https://www.tiktok.com/@essam3212?_r=1&_t=ZS-9BDWll6rtm1" target="_blank" class="social-circle tiktok-bg">
+                    <i class="fa-brands fa-tiktok"></i>
+                </a>
+                <!-- Instagram -->
+                <a href="https://www.instagram.com/isam_es?xtok=emFub2J0YjNlbXUw&utm_source=qr" target="_blank" class="social-circle instagram-bg">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <!-- Snapchat -->
+                <a href="https://snapchat.com/t/vFNyfgxS" target="_blank" class="social-circle snapchat-bg">
+                    <i class="fa-brands fa-snapchat"></i>
+                </a>
+                <!-- WhatsApp -->
+                <a href="https://wa.me/message/5BJZZ7HGXFZQI1" target="_blank" class="social-circle whatsapp-bg">
+                    <i class="fa-brands fa-whatsapp"></i>
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- JavaScript to handle local image upload -->
+    <script>
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.body.style.backgroundImage = `url('${e.target.result}')`;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+</body>
+</html>
