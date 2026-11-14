@@ -156,21 +156,41 @@
             }
         }
     </style>
-    <style>
-  @media print {
-    * {
-      -webkit-print-color-adjust: exact !important;
-      print-color-adjust: exact !important;
-    }
-    div, table, tr, td, .box, section {
-      page-break-inside: avoid !important;
-      break-inside: avoid !important;
-    }
-    @page {
-      margin: 0;
-    }
-  }
-</style>
+   <style>
+      @media print {
+        /* 1. إجبار إظهار جميع الألوان والصور */
+        *, html, body {
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+        }
+        
+        /* 2. حل مشكلة اختفاء الخلفية (تحويلها من ثابتة إلى متمددة في الطباعة) */
+        body {
+          background-attachment: scroll !important;
+          background-repeat: repeat !important;
+          background-size: cover !important;
+        }
+
+        /* 3. حل مشكلة انقسام المربعات والجداول */
+        table, tr, td, section {
+          page-break-inside: avoid !important;
+          break-inside: avoid !important;
+        }
+        
+        /* 4. خدعة سفاري: إجبار المربعات البيضاء على البقاء ككتلة واحدة غير قابلة للقص */
+        div[class*="bg-white"], div[class*="border"], .box {
+          page-break-inside: avoid !important;
+          break-inside: avoid !important;
+          display: inline-block !important; 
+          width: 100% !important;
+          box-sizing: border-box !important;
+        }
+
+        @page {
+          margin: 0;
+        }
+      }
+    </style>
 </head>
 <body class="antialiased">
 
